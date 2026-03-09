@@ -30,13 +30,17 @@ class RNN(nn.Module):
         return self.loss(predicted_vector, gold_label)
 
     def forward(self, inputs):
-        # [to fill] obtain hidden layer representation (https://pytorch.org/docs/stable/generated/torch.nn.RNN.html)
-        _, hidden = 
-        # [to fill] obtain output layer representations
+        # run input sequence through rnn, get hidden states for every word
+        output, _ = self.rnn(inputs)
 
-        # [to fill] sum over output 
+        # apply linear layer to each hidden state to get scores for 5 classes
+        output = self.W(output)
 
-        # [to fill] obtain probability dist.
+        # sum the output scores across all words in the sequence
+        output = output.sum(dim=0)
+
+        # apply log softmax to get log probabilities
+        predicted_vector = self.softmax(output)
 
         return predicted_vector
 
